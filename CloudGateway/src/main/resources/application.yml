@@ -2,4 +2,4 @@ spring:
   application:
     name: cloud-gateway
   config:
-    import: "configserver:http://localhost:8088"
+    import: "configserver:http://configserver:8088"

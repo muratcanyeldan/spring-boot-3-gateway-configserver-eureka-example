@@ -33,4 +33,4 @@ eureka:
   client:
     registerWithEureka: true
     serviceUrl:
-      defaultZone: ${DISCOVERY_URL:http://localhost:8761}/eureka
+      defaultZone: ${DISCOVERY_URL:http://eureka:8761}/eureka

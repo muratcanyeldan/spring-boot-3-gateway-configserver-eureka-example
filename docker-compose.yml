@@ -1,0 +1,80 @@
+services:
+  mysql:
+    image: 'mysql:latest'
+    container_name: mysql-inventory
+    restart: on-failure
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: inventory
+      MYSQL_USER: muratcan
+      MYSQL_PASSWORD: yeldan
+      MYSQL_ROOT_PASSWORD: yeldan
+    command: --character-set-server=utf8 --collation-server=utf8_general_ci
+
+  jenkins:
+    image: 'jenkins/jenkins:latest'
+    container_name: jenkins
+    network_mode: bridge
+    restart: on-failure
+    ports:
+      - '8080:8080'
+      - '50000:50000'
+    volumes:
+      - ./jenkins:/var/jenkins_home
+      - /var/run/docker.sock.raw:/var/run/docker.sock
+      - ~/.m2:/root/.m2
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+      - JENKINS_LANG=en_US.UTF-8
+
+  config_server:
+    build:
+      context: ./ConfigServer
+      dockerfile: Dockerfile
+    container_name: configserver
+    restart: on-failure
+    ports:
+      - '8088:8088'
+
+  eureka:
+    build:
+      context: ./EurekaServer
+      dockerfile: Dockerfile
+    container_name: eureka
+    restart: on-failure
+    ports:
+      - '8761:8761'
+    depends_on:
+      - config_server
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+
+  cloudgateway:
+    build:
+      context: ./CloudGateway
+      dockerfile: Dockerfile
+    container_name: cloudgateway
+    restart: on-failure
+    ports:
+      - '8081:8081'
+    depends_on:
+      - config_server
+      - eureka
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+
+  inventory_service:
+    build:
+      context: ./InventoryService
+      dockerfile: Dockerfile
+    container_name: inventory_service
+    restart: on-failure
+    ports:
+      - '8082:8082'
+    depends_on:
+      - config_server
+      - mysql
+      - eureka
+    environment:
+      SPRING_PROFILES_ACTIVE: local

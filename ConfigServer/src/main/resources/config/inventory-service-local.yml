@@ -5,7 +5,7 @@ spring:
   application:
     name: INVENTORY-SERVICE
   datasource:
-    url: jdbc:mysql://localhost:3306/inventory
+    url: jdbc:mysql://mysql-inventory:3306/inventory
     username: muratcan
     password: yeldan
     driver-class-name: com.mysql.jdbc.Driver
@@ -29,4 +29,4 @@ eureka:
   client:
     registerWithEureka: true
     serviceUrl:
-      defaultZone: ${DISCOVERY_URL:http://localhost:8761}/eureka
+      defaultZone: ${DISCOVERY_URL:http://eureka:8761}/eureka
