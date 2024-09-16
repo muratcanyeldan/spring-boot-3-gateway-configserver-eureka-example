@@ -1,4 +1,4 @@
-FROM maven:3.9.8 AS maven
+FROM maven:3.9.9 AS maven
 LABEL authors="Muratcan Yeldan"
 
 WORKDIR /opt/inventory
