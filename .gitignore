@@ -62,12 +62,7 @@ local.properties
 /.nb-gradle/
 
 ### VS Code ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
+.vscode/
 
 ### Spring Boot ###
 spring-boot-*.pid
@@ -95,6 +90,9 @@ node_modules/
 npm-debug.log
 yarn-debug.log
 yarn-error.log
+
+### Jenkins ###
+jenkins/
 
 ### Application Properties ###
 application-*.properties
