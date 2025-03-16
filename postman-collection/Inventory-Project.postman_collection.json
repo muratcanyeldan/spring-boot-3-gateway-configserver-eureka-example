@@ -53,15 +53,15 @@
 			"name": "Add Item To Inventory",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"itemName\": \"headphone\",\n    \"quantity\": \"1\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"raw": "{\n    \"itemName\": \"headphone\",\n    \"quantity\": 1\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8090/api/v1/inventory/add",
@@ -84,15 +84,15 @@
 			"name": "Create New Item",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"itemName\": \"headphone\",\n    \"description\": \"for listening music\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"raw": "{\n    \"itemName\": \"headphone\",\n    \"description\": \"for listening music\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8090/api/v1/item/create",

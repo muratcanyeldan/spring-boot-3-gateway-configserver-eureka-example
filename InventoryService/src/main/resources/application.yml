@@ -3,3 +3,11 @@ spring:
     name: inventory-service
   config:
     import: "configserver:http://configserver:8088"
+  cloud:
+    config:
+      fail-fast: true
+      retry:
+        initial-interval: 1500
+        multiplier: 1.5
+        max-attempts: 10
+        max-interval: 10000

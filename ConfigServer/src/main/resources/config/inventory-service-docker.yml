@@ -1,0 +1,32 @@
+server:
+  port: 5001
+
+spring:
+  application:
+    name: inventory-service
+  datasource:
+    url: jdbc:mysql://mysql-inventory:3306/inventory
+    username: muratcan
+    password: yeldan
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+eureka:
+  instance:
+    hostname: inventory-service
+    prefer-ip-address: false
+    instance-id: ${spring.application.name}:${server.port}
+  client:
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka 

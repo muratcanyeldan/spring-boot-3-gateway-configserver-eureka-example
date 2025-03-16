@@ -11,6 +11,13 @@ services:
       MYSQL_PASSWORD: yeldan
       MYSQL_ROOT_PASSWORD: yeldan
     command: --character-set-server=utf8 --collation-server=utf8_general_ci
+    networks:
+      - microservice-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "muratcan", "-pyeldan"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   jenkins:
     image: 'jenkins/jenkins:latest'
@@ -36,6 +43,8 @@ services:
     restart: on-failure
     ports:
       - '8088:8088'
+    networks:
+      - microservice-network
 
   eureka:
     build:
@@ -45,10 +54,10 @@ services:
     restart: on-failure
     ports:
       - '8761:8761'
-    depends_on:
-      - config_server
     environment:
-      SPRING_PROFILES_ACTIVE: local
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - microservice-network
 
   cloudgateway:
     build:
@@ -57,24 +66,28 @@ services:
     container_name: cloudgateway
     restart: on-failure
     ports:
-      - '8081:8081'
-    depends_on:
-      - config_server
-      - eureka
+      - '8090:8090'
     environment:
-      SPRING_PROFILES_ACTIVE: local
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - microservice-network
 
   inventory_service:
     build:
       context: ./InventoryService
       dockerfile: Dockerfile
-    container_name: inventory_service
+    container_name: inventory-service
     restart: on-failure
     ports:
-      - '8082:8082'
+      - '5001:5001'
     depends_on:
-      - config_server
-      - mysql
-      - eureka
+      mysql:
+        condition: service_healthy
     environment:
-      SPRING_PROFILES_ACTIVE: local
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - microservice-network
+
+networks:
+  microservice-network:
+    driver: bridge
